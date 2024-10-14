@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Negozio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="libJs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link href="css_generico.css" type="text/css" rel="stylesheet">
+    <script>
+        var nomeUtente;
+        var email;
+        var utente;
+
+        window.addEventListener("load", myInit, true);
+
+        function myInit() {
+            var url = new URLSearchParams(window.location.search);
+            nomeUtente = url.get("name");
+            email = url.get("email");
+            utente = getUtente(email);
+
+            //console.log(utente);
+
+            document.getElementById("utente").innerHTML = "CIAO," + nomeUtente.toUpperCase() + "!";
+            document.getElementById("credito").innerHTML = "CREDITO: " + utente.credito + "$";
+
+
+        };
+    </script>
+</head>
+
+<body>
+    <div class="bg-image"></div>
+    <div class="container-fluid menu">
+        <div class="row">
+            <div class="col title">
+                <span id="utente"></span>
+            </div>
+            <div class="col">
+                <ul class="nav justify-content-center text">
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriCarte()" >Tutte le carte</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriCollezione()">La mia collezione</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn btn-outline-light" type="button" onclick="apriNegozio()">Negozio</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriScambi()">Scambi</button>
+                  </li>
+                </ul>
+              </div>
+            <div class="col title" id="credito" style="text-align: right;"></div>
+        </div>
+    </div>
+    <div id = "bottonemenu">
+        <button  class="title" id="acquista_crediti" onclick="acquistaCrediti()">ACQUISTA CREDITI</button>
+    </div>
+    <!---Form per l'inserimento dei dati di pagamento-->
+    <div class="d-none" id="form-pagamento">
+        <div class="container text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h3 class="text-center">DATI PAGAMENTO</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group"> <label>NUMERO CARTA</label>
+                                    <div class="input-group"> <input type="number" class="form-control"
+                                            placeholder="Numero Carta valido" required  /> <span
+                                            class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 col-md-7">
+                                <div class="form-group"> <label><span class="hidden-xs">DATA DI SCADENZA</span></label>
+                                    <input type="date" class="form-control" required> </div>
+                            </div>
+                            <div class="col-xs-5 col-md-5 pull-right">
+                                <div class="form-group"> <label>CODICE CV</label> <input type="tel" class="form-control"
+                                        placeholder="CVC" required maxlength="3" /> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group"> <label>INTESTATARIO DELLA CARTA</label> <input type="text"
+                                        class="form-control" placeholder="NOME-COGNOME" required /> </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group"> <label>NUMERO DI CREDITI CHE SI DESIDERA ACQUISTARE</label>
+                                    <input onchange="aggiornaPrezzo(this.value)" id="crediti" type="number"
+                                        class="form-control" placeholder="NUMERO CREDITI" required /> </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group"> <label>PREZZO</label> <input disabled type="text"
+                                        class="form-control" id = "prezzo"> </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col"> <input type = "button" class="btn btn-success btn-lg btn-block" onclick="compraCrediti(email)" value = "CONFERMA PAGAMENTO"></input> </div>
+                                <div class = col-6></div>
+                                <div class="col"> <input type = "button" class="btn btn-danger btn-lg btn-block" onclick="apriNegozio()" value = "ANNULLA"></input> </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pacchetto">
+        <img src="marvelPack.png">
+        <br>
+        <button  class="title" onclick="controllaAcquisto(utente)" type="button" id = "acquisto">ACQUISTA 1$</button>
+    </div>
+
+    <div class="d-none" id='container-pacchetto'>
+        <p class = "title">HAI TROVATO:</p>
+        <br>
+        <div id="card-container-fluid" class="row">
+            <div class="card col d-none" id="card-hero">
+                <img class="card-img-top">
+                <p class="card_separator">
+                <div class="card-body text" style="color: black;">
+                    <p class="card-title"></p>
+                    <p class="card-text"></p>
+                    <button class="card-footer" onclick="caricaSchedaEroe(this.value)" value="">SCOPRI DI PIU</button>
+                </div>
+            </div>
+        </div>
+        <button class="title" onclick="apriNegozio()">OK</button>
+</body>
+
+</html>

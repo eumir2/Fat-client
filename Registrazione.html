@@ -1,0 +1,198 @@
+<html>
+<title>Registrazione</title>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="stileForm.css" type="text/css" rel="stylesheet">
+    <link href="css_generico.css" type="text/css" rel="stylesheet">
+    <script src="libJs.js"></script> 
+    <script>
+
+        function checkEmail(){
+            let email = document.getElementById("email").value;
+            if(controllaEmail(email)){
+                document.getElementById("emailAlert1").classList.toggle("d-none");
+                return true;
+            }else{
+                document.getElementById("emailAlert1").classList.remove("d-none");
+                return false;
+            }
+        }
+
+        function checkPassword(){
+            let password = document.getElementById("password").value;
+            if(controllaPassword(password)){
+                document.getElementById("pwAlert1").classList.toggle("d-none");
+                document.getElementById("attributiPw").classList.toggle("d-none");
+                return true;
+            }else{
+                document.getElementById("pwAlert1").classList.remove("d-none");
+                document.getElementById("attributiPw").classList.remove("d-none");
+                return false;
+            }
+        }
+
+        function pulisciForm() {
+            //console.log("form pulito");
+            document.getElementById("registrazione").reset();
+            document.getElementById("emailAlert1").classList.add("d-none");
+            document.getElementById("emailAlert2").classList.add("d-none");
+            document.getElementById("pwAlert1").classList.add("d-none");
+            document.getElementById("attributiPw").classList.add("d-none");
+            document.getElementById("pwAlert2").classList.add("d-none");
+        }
+
+        function controllaRegistrazione() {
+            var pw1 = checkPassword();
+            var pw2 = confermaPassword();
+            var m1 = checkEmail();
+            var m2 = confermaEmail();
+
+            if (pw1 == true && pw2 == true && m1 == true && m2 == true) {
+                var nomeUtente = document.getElementById("nomeUtente").value;
+                //console.log(nomeUtente);
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var supereroe = document.getElementById("supereroe").value;
+            }else{
+                return;
+            }
+
+            //console.log(password);
+
+            var carte = [];
+
+            var utente = {
+                'nomeUtente': nomeUtente,
+                'email': email,
+                'password': password,
+                'supereroe' : supereroe,
+                'credito' : 10,
+                'carte' : carte,
+                'scambiDisponibili' : 0
+            }
+
+            var utenti = [];
+
+            if (window.localStorage.getItem('utenti') != null) {
+                utenti = JSON.parse(window.localStorage.getItem('utenti'))
+                //console.log(typeof(utenti));
+                //console.log(Array.isArray(utenti));
+            }
+            
+            if (!controllaEsistenza(utente, utenti)) {
+                utenti.push(utente)
+                //console.table(utenti)
+                window.localStorage.setItem('utenti', JSON.stringify(utenti))
+                window.location.href = "Home.html?name="+nomeUtente+"&email="+email;
+            } else {
+                alert("Utente già esistente")
+            }
+
+        }
+
+    </script>
+    <style>
+        form input {
+            margin-bottom: 5px;
+        }
+
+        .login-box{
+            margin: auto;
+            width: 60%;
+            height: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-image"></div>
+    <br><br><br>
+    <div class="login-box">
+        <p>Registrazione</p>
+        <form id="registrazione">
+            <div class="user-box">
+                <input required="true" id="nomeUtente" name="nomeUtente" type="text" maxlength="15">
+                <label>Nome Utente (Max 15 caratteri)</label>
+            </div>
+            <div class="user-box">
+                <input required="true" id="email" type="mail" onkeydown="checkEmail(this)">
+                <label>Email</label>
+                <p id="emailAlert1" class="d-none">Email non valida</p>
+            </div>
+            <div class="user-box">
+                <input required="true" id="emailC" type="mail" onkeyup="confermaEmail(this)">
+                <label>Conferma Email</label>
+                <p id="emailAlert2" class="d-none">Le email non coincidono</p>
+            </div>
+            <div class="user-box">
+                <input required="true" id="password" name="password" type="password"
+                    onkeyup="checkPassword(this)">
+                <label>Password</label>
+                <p id="pwAlert1" class="d-none">
+                <ul id="attributiPw" class="d-none">
+                    La password deve avere:
+                    <li>Almeno 8 caratteri</li>
+                    <li>Una lettera maiuscola</li>
+                    <li>Una letter minuscola</li>
+                    <li>Un numero</li>
+                </ul>
+                </p>
+            </div>
+            <div class="user-box">
+                <input required="true" id="passwordC" name="confermaP" type="password"
+                    onkeyup="confermaPassword(this)">
+                <label>Conferma Password</label>
+                <p id="pwAlert2" class="d-none">Le password non coincidono</p>
+            </div>
+            <div class="user-box">
+                <label>Supereroe preferito:</label><br><br>
+                <select id=supereroe name="supereroe" class="form-select" aria-label="Default select example"
+                    required="true">
+                    <option value="Iron Man">Iron Man</option>
+                    <option value="Spiderman">Spiderman</option>
+                    <option value="Thor">Thor</option>
+                    <option value="Hulk">Hulk</option>
+                    <option value="Capitan America">Capitan America</option>
+                </select>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col">
+                    <a href="#" onclick="controllaRegistrazione()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Registrati
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" onclick="pulisciForm()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Cancella
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="Welcome.html">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Torna Indietro
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br><br><br>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

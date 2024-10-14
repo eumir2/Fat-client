@@ -1,0 +1,181 @@
+@font-face {
+    font-family: marvelFont;
+    src: url(marvel-font/MarvelRegular-Dj83.ttf);  
+}
+
+@font-face {
+    font-family: marvelFontLowercase;
+    src: url(marvel-font/MarvelLowercase.otf);  
+}
+
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#utente {
+    text-align: left;
+    padding-top: 20px;
+  }
+
+#profilo {
+    text-align: right;
+    padding: 0px;
+}
+
+#avatar {
+    height: 60px;
+}
+
+ .title{
+    padding-top: 0px;
+    vertical-align:middle;
+    font-family: marvelFont;
+    color: #fff;
+    font-size: xx-large;
+    letter-spacing: 2px;
+ }
+
+ .text{
+    color: #fff;
+    font-family: MarvelFontLowercase;
+ }
+
+ .bg-image {
+    /* The image used */
+    background-image: url(sfondo.jpg);
+  
+    /* Add the blur effect */
+    filter: blur(1px);
+    -webkit-filter: blur(2px);
+  
+    /* Full height */
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    position: fixed;
+  }
+
+.menu{
+    position: fixed;
+    width: 100%;
+    background-color: #8D181F;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+}
+
+
+#card_container {
+    width: 95%;
+    margin: auto;
+    padding: 5px;
+    padding-top: 100px;
+}
+
+#containerEroe {
+    padding-top: 20px;
+    padding-left: 20px;
+    background-image: linear-gradient(to right bottom, #8D181F, #CD9B1D);
+    
+   /* background-image: linear-gradient(to right bottom, #8D181F, #FF7F50);*/
+}
+
+#immagineEroe{
+    max-width: fit-content;
+}
+
+#pacchetto{
+    position: relative;
+    margin: auto;
+    width: fit-content;
+}
+
+#pacchetto > img {
+    max-width: 200px;
+}
+
+#pacchetto > button, #container-pacchetto > button {
+    
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    background: #8D181F;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+}
+
+#container-pacchetto > button{
+    margin-top: 10px;
+    align-items: center;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+}
+
+#pacchetto > button:hover, #container-pacchetto > button:hover {
+    background: #fff;
+    color: black;
+}
+
+#container-pacchetto{
+    margin-top: 20px;
+    padding-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    width: 80%;    
+    text-align: center;
+    color:black;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+}
+
+#form-pagamento{
+    position: fixed;
+    left:50%; 
+    top:50%; 
+    transform: translate(-50%, -50%);
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+    z-index: 10;
+}
+
+#acquista_crediti{
+    margin-left: 85%;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    background: #8D181F;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+}
+
+#bottonemenu {
+    padding-top: 60px;
+}
+
+#acquista_crediti:hover {
+    background: #fff;
+    color: black;
+}
+
+#prompt-copie, #prompt-scambi {
+    position: fixed;
+    left:50%; 
+    top:50%; 
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .6);
+    z-index: 10;
+}
+

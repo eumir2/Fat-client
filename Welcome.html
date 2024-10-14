@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css_generico.css" type="text/css" rel="stylesheet">
+  <link href="stileForm.css" type="text/css" rel="stylesheet">
+  <style>
+  
+    .title {
+      text-align: center;
+      font-size: 80px;
+      text-shadow: 2px 2px 2px black;
+    }
+
+    .login-box{
+      transform: translate(50%);
+      width: 50%;
+    }
+    
+  </style>
+  <script>
+    function controllaLogin(email, password) {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+
+      var utenti = [];
+      utenti = JSON.parse(window.localStorage.getItem("utenti"));
+      
+      var risultato = utenti.find(utente => utente.email == email)
+
+            if (risultato != undefined) {
+              if(risultato.password != password){
+                document.getElementById("controlloPw").classList.remove("d-none");
+              }else{
+                window.location.href = "Home.html?name="+risultato.nomeUtente+"&email="+risultato.email;
+              }
+            } else {
+                window.alert("Utente non presente");
+            }
+
+    }
+  </script>
+  <title>
+    Welcome Page
+  </title>
+
+</head>
+
+<body>
+  <div class="bg-image"></div>
+  <br><br><br>
+  <div class = "title">
+    BENVENUTO SU AFSE!
+  </div>
+  <div class="login-box"> 
+    <p>Login</p>
+    <form name="login">
+      <div class="user-box">
+        <input required="true" id = "email" name="email" type="text">
+        <label>Email</label>
+      </div>
+      <div class="user-box">
+        <input required="true" id = "password" name="password" type="password">
+        <label>Password</label>
+        <p class = "d-none" id = "controlloPw">Password errata</p>
+      </div>
+      <a href="#" onclick="controllaLogin()">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Accedi
+      </a>
+    </form>
+    <p>Non hai ancora un account?<a href="Registrazione.html" class="a2"> Registrati!</a></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

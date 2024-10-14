@@ -1,0 +1,235 @@
+<html>
+    <head>
+        <title>Profilo Utente</title>
+        <link href="stileForm.css" type="text/css" rel="stylesheet">
+        <link href="css_generico.css" type="text/css" rel="stylesheet">
+        <script src="libJs.js"></script> 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <style>
+            .login-box{
+                width: 90%;
+                margin: auto;
+                margin-top: 20px;
+            }
+
+            input {
+                margin-bottom: 5px;
+            }
+
+            button {
+                background-color: #8D181F;
+                height: 30px;
+                width: 40px;
+                border-radius: 5px;
+                background: #fff;
+                color: #272727;
+                border-radius: 5px;
+            }
+
+            img{
+                right: 10px;
+                height: 30px;
+                width: 30px;
+            }
+
+            a:disabled{
+                background-color: #272727;
+            }
+        
+
+            
+        </style>
+
+        <script>
+            var nomeUtente;
+            var email;
+            var modifica;
+
+            window.addEventListener("load", myInit, true); 
+            
+            function myInit(){
+                loadEroi();
+                getUtente();
+            }; 
+
+            function loadEroi(){
+                let eroi = ["Iron Man", "Spiderman","Thor","Hulk","Capitan America","Occhio di Falco","Vedova Nera"];
+                //console.log(JSON.stringify(eroi));
+                var tmp = JSON.stringify(eroi);
+                window.localStorage.setItem("eroi",tmp);
+
+                
+            }
+
+            
+
+            function getUtente(){
+                var url = new URLSearchParams(window.location.search);
+                nomeUtente = url.get("name");
+                email = url.get("email");
+                modifica = url.get("modifica");
+
+                if(modifica == "true"){
+                    document.getElementById("titolo").innerHTML = "MODIFICA IL TUO PROFILO";
+                    document.getElementById("nomeUtente").removeAttribute("readonly");
+                    document.getElementById("email").removeAttribute("readonly");
+                    document.getElementById("password").removeAttribute("readonly");
+                }else{
+                    document.getElementById("titolo").innerHTML = "VISUALIZZA IL TUO PROFILO";
+                    document.getElementById("nomeUtente").disabled = true;
+                    document.getElementById("email").disabled = true;
+                    document.getElementById("password").disabled = true;
+                    document.getElementById("supereroe").disabled = true;
+                    document.getElementById("conferma").remove();
+                }
+                var utenti = []
+
+                if (window.localStorage.getItem('utenti') != null) {
+                    utenti = JSON.parse(window.localStorage.getItem('utenti'))
+                }
+
+                var utente = utenti.find(u => u.email == email);
+
+                //console.log(utente.nomeUtente);
+                
+                document.getElementById("nomeUtente").value = utente.nomeUtente;
+                document.getElementById("email").value =    utente.email;
+                document.getElementById("password").value = utente.password;
+                document.getElementById("supereroe").value = utente.supereroe;
+                
+
+            }
+
+            function tornaIndietro(){
+                window.location.href = "Home.html?name="+nomeUtente+"&email="+email;
+            }
+
+            function verificaEmail(email){
+                //let flag = controllaEmail(email);
+                if(controllaEmail(email.value)){
+                    document.getElementById("email").classList.remove("is-invalid");
+                }else{
+                    document.getElementById("email").classList.add("is-invalid");
+                }
+            }
+
+            function verificaPassword(password){
+                if(controllaPassword(password.value)){
+                    document.getElementById("password").classList.remove("is-invalid");
+                }else{
+                    document.getElementById("password").classList.add("is-invalid");
+                }
+            }
+
+            function togglePassword(check){
+                //console.log("checcato")
+                let input = document.getElementById("password");
+                if(check.checked){
+                    input.type = "text";
+                    //console.log("checcato")
+                }else{
+                    input.type = "password";
+                }
+            }
+
+            function applicaModifiche(){
+                let flagMail =  controllaEmail(document.getElementById("email").value);
+                let flagPsw = controllaPassword(document.getElementById("password").value);
+                if(flagMail == true && flagPsw == true){
+                    let newSupereroe = document.getElementById("supereroe").value;
+                    let newNomeUtente = document.getElementById("nomeUtente").value;
+                    let newEmail = document.getElementById("email").value;
+                    let newPassword = document.getElementById("password").value;
+
+                    var utente = {
+                        'nomeUtente': newNomeUtente,
+                        'email': newEmail,
+                        'password': newPassword,
+                        'supereroe' : newSupereroe
+                    }
+
+                    var utenti = []
+
+                    if (window.localStorage.getItem('utenti') != null) {
+                        utenti = JSON.parse(window.localStorage.getItem('utenti'))
+                    }
+                    var indice = utenti.findIndex(utente=> utente.email == email);
+                    utenti[indice] = utente;
+                    console.table(utenti)
+                    window.localStorage.setItem('utenti', JSON.stringify(utenti))
+
+                    window.location.href = "Home.html?name="+newNomeUtente+"&email="+newEmail;
+
+                }
+
+                //console.log(flagMail + "  " + flagPsw);
+            }
+
+        </script>
+    </head>
+    <body>
+        <div class="bg-image"></div>
+        <br><br><br>
+        <div class="login-box">
+            <div class="user-box title" id ="titolo"></div>
+            <div class="row">
+                <label class="col-sm-2 col-form-label text">Nome Utente</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control" id="nomeUtente" maxlength="15">
+                </div>
+                <label class="col-sm-2 col-form-label text">Email</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control" id="email" onkeyup="verificaEmail(this)">
+                </div>
+                <label class="col-sm-2 col-form-label text">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" readonly class="form-control" id="password" value="" onkeyup="verificaPassword(this)">
+                  <input type="checkbox" name="check" onclick="togglePassword(this)">
+                  <label for="check" class="text" id="c">Mostra Password</label>
+                </div>
+                <div class="text">
+                    <label>Supereroe preferito:</label>
+                    <div>
+                        <select id=supereroe name="supereroe" class="form-select col-sm-9">
+                            <option value="Iron Man">Iron Man</option>
+                            <option value="Spiderman">Spiderman</option>
+                            <option value="Thor">Thor</option>
+                            <option value="Hulk">Hulk</option>
+                            <option value="Capitan America">Capitan America</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                <form>
+                    <div class = "row">
+                        <div class="col">
+                            <a href="#" id="conferma" onclick="applicaModifiche()">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                Conferma
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" onclick="tornaIndietro()">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                Torna Indietro
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    </body>
+</html>

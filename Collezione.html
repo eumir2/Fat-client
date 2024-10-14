@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<head>
+    <title>La mia collezione</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css_generico.css" type="text/css" rel="stylesheet">
+    <link href="stileForm.css" type="text/css" rel="stylesheet">
+    <link href="stileCards.css" type="text/css" rel="stylesheet">
+    <script src="libJs.js"></script>
+    <script>
+        var nomeUtente;
+        var email;
+        var utente;
+
+        window.addEventListener("load", myInit, true);
+
+        function myInit() {
+            var url = new URLSearchParams(window.location.search);
+            nomeUtente = url.get("name");
+            email = url.get("email");
+            utente = getUtente(email);
+
+            //console.log(utente);
+            document.getElementById("utente").innerHTML = "CIAO," + nomeUtente.toUpperCase() + "!";
+            loadCollezione(utente);
+        };
+    </script>
+</head>
+
+<body>
+    <div class="bg-image"></div>
+    <div class="container-fluid menu">
+        <div class="row">
+            <div class="col-4 title">
+                <span id="utente"></span>
+            </div>
+            <div class="col-4">
+                <ul class="nav justify-content-center text">
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriCarte()">Tutte le carte</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn btn-outline-light" type="button" onclick="apriCollezione()">La mia collezione</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriNegozio()">Negozio</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn" type="button" onclick="apriScambi()">Scambi</button>
+                  </li>
+                </ul>
+              </div>
+        </div>
+    </div>
+
+  <!--CODICE PER LA SINGOLA CARTA-->
+    <div id="card_container" class="row">
+        <div class="card col-3 d-none" id="card-hero">
+            <img class="card-img-top">
+            <p class="card_separator">
+            <div class="card-body">
+                <p class="card-title"></p>
+                <p class="card-text text"></p>
+                <p class="card-text text"></p>
+                <p class="d-none num"></p>
+                <button class="card-footer" onclick="caricaSchedaEroe(this.value)">SCOPRI DI PIU</button>
+                <button class="card-footer" onclick="selezionaCopie(this.value)">SCAMBIA</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--PROMPT PER LA SELEZIONE DEL NUMERO DI COPIE DA SCAMBIARE-->
+   <div class = "d-none text text-center" id = "prompt-copie">
+    <div><p id = "disponibilita"></p></div>  
+    <form>
+      <label>NUMERO DI COPIE DA SCAMBIARE</label><input id = "copie" type = "number"></input>
+      <br>
+      <br>
+      <input  type = "button" class = "btn btn-success" onclick="creaScambio()" value = "SCAMBIA"></input>
+      <input type = "button"  class = "btn btn-danger"  onclick="apriCollezione()" value = "ANNULLA"></input>
+      <p  class = "d-none" id = "params"></p>
+    </form>
+   </div> 
+
+
+</body>

@@ -1,0 +1,31 @@
+
+  .carousel-inner {
+    left: 20px;
+    height: 100%;
+    width: 95%;
+    display: flex;
+  }
+  
+  .carousel-item {
+    min-height: fit-content;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
+  
+  .carousel-item img {
+    max-height: 80%;
+    max-width: 100%;
+  }
+
+
+  
+
+  .label{
+    position: relative;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  
